@@ -68,7 +68,12 @@ def search():
         cafe = db.session.execute(db.select(Cafe).where(Cafe.location==location)).scalar()
         if cafe:
             return jsonify(cafe=cafe.to_dict())
-        
+        else:
+            return jsonify(
+                error={
+                    "Not Found": "Sorry, we don't have a coffee at that location."
+                }
+            )
 
 
 # HTTP POST - Create Record
