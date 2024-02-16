@@ -104,7 +104,7 @@ def add():
 # HTTP PUT/PATCH - Update Record
 @app.errorhandler(404)
 def invalid_route(e):
-    return jsonify(error={'Not found': 'Sorry a cafe with that id was not found in the database.'})
+    return jsonify(error={'Not found': 'Sorry a cafe with that id was not found in the database.'}), 404
 
 
 @app.route('/update-price/<int:id>', methods=['PATCH'])
@@ -113,9 +113,9 @@ def update_price(id):
     if cafe:
         cafe.coffee_price = request.args.get('new_price')
         db.session.commit()
-        return jsonify(response={"success": "Successfully updated the price."})
+        return jsonify(response={"success": "Successfully updated the price."}), 200
     else:
-        return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."})
+        return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
 
 
 # HTTP DELETE - Delete Record
