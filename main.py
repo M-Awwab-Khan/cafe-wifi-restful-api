@@ -109,7 +109,7 @@ def invalid_route(e):
 
 @app.route('/update-price/<int:id>', methods=['PATCH'])
 def update_price(id):
-    cafe = db.get_or_404(Cafe, id)
+    cafe = db.session.get(Cafe, id)
     if cafe:
         cafe.coffee_price = request.args.get('new_price')
         db.session.commit()
@@ -119,6 +119,32 @@ def update_price(id):
 
 
 # HTTP DELETE - Delete Record
+
+@app.route('/report-closed/<int:id>', methods=['DELETE'])
+def delete_cafe(id):
+    api_key = request.args.get('api-key')
+    if api_key == 'TopSecretAPIKey':
+        cafe = db.session.get(Cafe, id)
+        if cafe:
+            db.session.delete(cafe)
+            db.session.commit()
+            return jsonify(
+                success={
+                    'message': 'The requested cafe has successfully been deleted.'
+                }
+            ), 200
+        else:
+            return jsonify(
+                error={
+                    'message': "Sorry, the requested cafe is not found in our database."
+                }
+            ), 404
+    else:
+        return jsonify(
+            error={
+                'message': 'Sorry, thats not allowed. Make sure you have the correct API key.'
+            }
+        ), 403
 
 
 if __name__ == '__main__':
