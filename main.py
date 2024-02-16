@@ -102,6 +102,10 @@ def add():
     )
 
 # HTTP PUT/PATCH - Update Record
+@app.errorhandler(404)
+def invalid_route(e):
+    return jsonify(error={'Not found': 'Sorry a cafe with that id was not found in the database.'})
+
 
 @app.route('/update-price/<int:id>', methods=['PATCH'])
 def update_price(id):
