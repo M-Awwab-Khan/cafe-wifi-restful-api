@@ -79,6 +79,28 @@ def search():
 
 # HTTP POST - Create Record
 
+@app.route('/add', methods=['POST'])
+def add():
+    new_cafe = Cafe(
+        name=request.args.get('name'),
+        map_url=request.args.get('map_url'),
+        img_url = request.args.get('img_url'),
+        location = request.args.get('location'),
+        seats = request.args.get('seats'),
+        has_toilet = request.args.get('has_toilet'),
+        has_wifi = request.args.get('has_wifi'),
+        has_sockets = request.args.get('has_sockets'),
+        can_take_calls = request.args.get('can_take_calls'),
+        coffee_price = request.args.get('coffee_price')
+    )
+    db.session.add(new_cafe)
+    db.session.commit()
+    return jsonify(
+        response = {
+            "success": "Successfully added the new cafe."
+        }
+    )
+
 # HTTP PUT/PATCH - Update Record
 
 # HTTP DELETE - Delete Record
