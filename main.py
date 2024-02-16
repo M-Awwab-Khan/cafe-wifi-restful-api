@@ -65,9 +65,10 @@ def all():
 def search():
     location = request.args.get('location')
     with app.app_context():
-        cafe = db.session.execute(db.select(Cafe).where(Cafe.location==location)).scalar()
-        if cafe:
-            return jsonify(cafe=cafe.to_dict())
+        cafes = db.session.execute(db.select(Cafe).where(Cafe.location==location)).scalars().all()
+        all_cafes = [cafe.to_dict() for cafe in cafes]
+        if all_cafes:
+            return jsonify(all_cafes)
         else:
             return jsonify(
                 error={
